@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { List, InputItem, DatePicker, TextareaItem, Button, Toast } from 'antd-mobile'
 import moment from 'moment'
@@ -124,6 +124,18 @@ class Detail extends React.Component {
   }
 }
 
+Detail.onRouteBack = function () {
+  Toast.loading('读取中')
+}
+
+Detail.propTypes = {
+  user: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired
+  }).isRequired,
+  userUid: PropTypes.string.isRequired,
+  token: PropTypes.string.isRequired
+}
 export default connect(({ auth: { user, userUid, token } }) => {
   return {
     user,

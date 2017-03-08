@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import moment from 'moment'
 
 import { List, DatePicker, Button, Toast } from 'antd-mobile'
 import { post } from '../../services/request'
+
 
 class HomePage extends React.Component {
   constructor (props) {
@@ -99,7 +100,6 @@ class HomePage extends React.Component {
     }
   }
   async componentWillReceiveProps () {
-    Toast.loading('读取中')
     await this.getReportList()
     Toast.hide()
   }
@@ -124,8 +124,13 @@ class HomePage extends React.Component {
   }
 }
 
+HomePage.propTypes = {
+  token: PropTypes.string.isRequired,
+  userUid: PropTypes.string.isRequired,
+  setGlobalUser: PropTypes.func.isRequired
+}
 export default connect(({ auth: { token, userUid, user }}) => {
-  return { token, userUid, user }
+  return { token, userUid }
 }, (dispatch) => {
   return {
     setGlobalUser: (user) => dispatch({type: 'SET_USER', payload: user})

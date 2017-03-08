@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-
 import { Toast } from 'antd-mobile'
 
 import LoginPanel from '../../components/auth/LoginPanel'
@@ -39,4 +38,8 @@ const Auth = ({ navigator, dispatch }) => {
   )
 }
 
+Auth.propTypes = {
+  navigator: PropTypes.any.isRequired,
+  dispatch: PropTypes.func.isRequired
+}
 export default connect()(Auth)

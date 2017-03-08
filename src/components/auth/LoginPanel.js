@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { View, Text, TextInput } from 'react-native'
 
 
@@ -60,4 +60,8 @@ class LoginPanel extends Component {
   }
 }
 
+LoginPanel.propTypes = {
+  form: PropTypes.object.isRequired,
+  loginHandler: PropTypes.func.isRequired
+}
 export default createForm()(LoginPanel)
