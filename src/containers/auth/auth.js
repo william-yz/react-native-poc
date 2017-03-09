@@ -2,12 +2,13 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import { Toast } from 'antd-mobile'
+import { Actions } from 'react-native-router-flux'
 
 import LoginPanel from '../../components/auth/LoginPanel'
 import request from '../../services/request'
 
 
-const login = (navigator, dispatch) => async (user) => {
+const login = (dispatch) => async (user) => {
   Toast.loading('登录中...')
   const result = await request('/runtime/business/auth/login', {
     method: 'POST',
@@ -26,20 +27,19 @@ const login = (navigator, dispatch) => async (user) => {
         userUid: result.result.uid
       }
     })
-    navigator.push({name: 'Home'})
+    Actions.home()
   } else {
     Toast.fail('用户名或密码错误.', 0.5)
   }
 }
 
-const Auth = ({ navigator, dispatch }) => {
+const Auth = ({ dispatch }) => {
   return (
-    <LoginPanel loginHandler={login(navigator, dispatch)}/>
+    <LoginPanel loginHandler={login(dispatch)}/>
   )
 }
 
 Auth.propTypes = {
-  navigator: PropTypes.any.isRequired,
   dispatch: PropTypes.func.isRequired
 }
 export default connect()(Auth)

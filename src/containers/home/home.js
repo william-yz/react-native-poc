@@ -2,8 +2,9 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 import moment from 'moment'
+import { Actions } from 'react-native-router-flux'
 
-import { List, DatePicker, Button, Toast } from 'antd-mobile'
+import { List, DatePicker, Button, Toast, WhiteSpace } from 'antd-mobile'
 import { post } from '../../services/request'
 
 
@@ -11,8 +12,6 @@ class HomePage extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      datas: [],
-      total: 0,
       createAbled: false
     }
   }
@@ -77,39 +76,32 @@ class HomePage extends React.Component {
           row: data
         }
       })
-      this.setState({
-        datas:  records
-      })
+      this.props.updateList(records)
     }
   }
 
   componentDidMount () {
-    // this.getReportList()
+    this.getReportList()
     this.getUser()
   }
 
   goDetail (isUpdate) {
     return (record) => {
-      this.props.navigator.push({
-        name: 'Detail',
-        params: {
-          record,
-          isUpdate
-        }
+      Actions.detail({
+        record,
+        isUpdate
       })
     }
   }
-  async componentWillReceiveProps () {
-    await this.getReportList()
-    Toast.hide()
-  }
+
   render () {
     return (
       <List renderHeader={() => '日报列表'}>
+        <WhiteSpace />
         <List.Item
           extra={<Button type="primary" size="small" disabled={!this.state.createAbled} onClick={this.goDetail(false).bind(this, {})} inline>新建</Button>}>
         </List.Item>
-        {this.state.datas.map(record => {
+        {this.props.reportList.map(record => {
           return (
             <List.Item
               key={record.id}
@@ -127,12 +119,23 @@ class HomePage extends React.Component {
 HomePage.propTypes = {
   token: PropTypes.string.isRequired,
   userUid: PropTypes.string.isRequired,
-  setGlobalUser: PropTypes.func.isRequired
+  setGlobalUser: PropTypes.func.isRequired,
+  reportList: PropTypes.arrayOf(PropTypes.object).isRequired
 }
-export default connect(({ auth: { token, userUid, user }}) => {
-  return { token, userUid }
-}, (dispatch) => {
+const mapStateToProps = ({
+  auth: { token, userUid },
+  reports: {  reportList }
+}) => {
   return {
-    setGlobalUser: (user) => dispatch({type: 'SET_USER', payload: user})
+    token,
+    userUid,
+    reportList
+  }
+}
+
+export default connect(mapStateToProps, (dispatch) => {
+  return {
+    setGlobalUser: (user) => dispatch({type: 'SET_USER', payload: user}),
+    updateList: (reportList) => dispatch({type: 'UPDATE_REPORTS', payload: reportList})
   }
 })(HomePage)

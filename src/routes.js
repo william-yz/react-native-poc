@@ -1,67 +1,36 @@
 import React, {Component} from 'react'
-import { connect } from 'react-redux'
-import { AppRegistry, Text, View, Navigator, TouchableHighlight } from 'react-native'
-import _ from 'lodash'
+import { Router, Scene } from 'react-native-router-flux'
+import { WhiteSpace } from 'antd-mobile'
 
 import Auth from './containers/auth/auth'
 import Home from './containers/home/home'
 import Detail from './containers/detail/detail'
 
-let index = 0
-const routes = {
-  'Auth': Auth,
-  'Home': Home,
-  'Detail': Detail
-}
-
-const renderScene = (route, navigator) => {
-  const Component = routes[route.name]
-  const back = () => {
-    if (_.isFunction(Component.onRouteBack)) {
-      if (Component.onRouteBack() === false) {
-        return
-      }
-    }
-    navigator.pop()
-    index ++
+const routes = [
+  {
+    key: 'auth',
+    component: Auth,
+    title: '登录',
+    initial: true
+  }, {
+    key: 'home',
+    component: Home,
+    title: 'home'
+  }, {
+    key: 'detail',
+    component: Detail,
+    title: 'Detail'
   }
-  navigator.push = _.wrap(navigator.push, (func, args) => {
-    if (_.isFunction(Component.onRoutePush)) {
-      if (Component.onRoutePush() === false) {
-        return _.noop
-      }
-    }
-    return func(args)
-  })
-  return (
-    <View>
-      {
-        route.name !== 'Auth' &&
-        <TouchableHighlight
-          underlayColor="white"
-          onPress={back}>
-          <Text style={{color: '#108ee9', fontSize: 20}}>&lt; Back</Text>
-        </TouchableHighlight>
-      }
-      <Component navigator={navigator} params={route.params}  routeIndex={index}/>
-    </View>
-  )
-}
-
+]
 
 const Routes = () => {
-  const configureScene = (route) => {
-    return Navigator.SceneConfigs.FadeAndroid
-  }
-
-
-
   return (
-    <Navigator
-      initialRoute={{name: 'Auth'}}
-      configureScene={configureScene}
-      renderScene={renderScene} />
+    <Router>
+      <Scene key="root">
+        {routes.map(route => <Scene {...route}/>)}
+      </Scene>
+    </Router>
   )
 }
 
-export default connect()(Routes)
+export default Routes

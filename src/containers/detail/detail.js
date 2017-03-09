@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { List, InputItem, DatePicker, TextareaItem, Button, Toast } from 'antd-mobile'
+import { List, InputItem, DatePicker, TextareaItem, Button, Toast, WhiteSpace } from 'antd-mobile'
 import moment from 'moment'
 import _ from 'lodash'
 
@@ -9,48 +9,44 @@ class Detail extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      displayRecord: {
-        reporter: this.props.user.value,
-        reportDate: moment(),
-        content: ''
-      }
+      reporter: this.props.user.value,
+      reportDate: moment(),
+      content: ''
     }
   }
   
   async componentDidMount () {
-    if (this.props.params.isUpdate) {
-      const displayRecord = {
-        reporter: _.get(this.props.params.record, ['BH_GZBGXQY.BH_GZBGXQYBGR', 'value']),
-        reportDate: moment(parseInt(_.get(this.props.params.record, ['BH_GZBGXQY.BH_GZBGXQYBGRQ']))),
-        content: _.get(this.props.params.record, ['BH_GZBGXQY.BH_GZBGXQYJRZJ'])
+    if (this.props.isUpdate) {
+      const newState = {
+        reporter: _.get(this.props.record, ['BH_GZBGXQY.BH_GZBGXQYBGR', 'value']),
+        reportDate: moment(parseInt(_.get(this.props.record, ['BH_GZBGXQY.BH_GZBGXQYBGRQ']))),
+        content: _.get(this.props.record, ['BH_GZBGXQY.BH_GZBGXQYJRZJ'])
       }
       this.setState({
-        displayRecord
+        ...newState
       })
     }
   }
 
   inputContent(content) {
     this.setState({
-      displayRecord: {
-        ...this.state.displayRecord,
-        content
-      }
+      ...this.state,
+      content
     })
   }
 
   async save () {
-    const record = this.props.params.record
+    const record = this.props.record
     const now = moment().toDate().getTime()  + ''
     const boFields = {
-      BH_GZBGXQYBGRQ: this.state.displayRecord.reportDate.toDate().getTime() + '', 
+      BH_GZBGXQYBGRQ: this.state.reportDate.toDate().getTime() + '', 
       BH_GZBGXQYTJSJ: now, 
-      BH_GZBGXQYJRZJ: this.state.displayRecord.content, 
+      BH_GZBGXQYJRZJ: this.state.content, 
       BH_GZBGXQYMRJH: "", 
       BH_GZBGXQYBGR: this.props.user, 
       BH_GZBGXQYXGR: this.props.user
     }
-    if (this.props.params.isUpdate) boFields.id = record['BH_GZBGXQY.id']
+    if (this.props.isUpdate) boFields.id = record['BH_GZBGXQY.id']
     const result = await post('/runtime/business/data/plugin/CZCJ0011', {
       headers: {
         Authorization: this.props.token
@@ -71,9 +67,9 @@ class Detail extends React.Component {
       }
     })
     if (result.status === 0) {
-      if (!this.props.params.isUpdate) {
+      if (!this.props.isUpdate) {
         _.set(record, 'BH_GZBGXQY.id', result.result[0].main)
-        this.props.params.isUpdate = true
+        this.props.isUpdate = true
       }
       Toast.success('保存成功', 0.5)
     } else {
@@ -86,19 +82,21 @@ class Detail extends React.Component {
     
     return (
       <List renderHeader={() => '编辑报告'}>
+        <WhiteSpace />
         <List.Item
           extra={<Button type="primary" size="small" onClick={this.save.bind(this)} inline>保存</Button>}>
         </List.Item>
         <InputItem
-          value={this.state.displayRecord.reporter}
+          value={this.state.reporter}
           editable={false}
         >报告人
         </InputItem>
         <DatePicker
           mode="date"
-          value={this.state.displayRecord.reportDate}
-          disabled={this.props.params.isUpdate}
+          value={this.state.reportDate}
+          disabled={this.props.isUpdate}
           maxDate={moment()}
+          onChange={reportDate => this.setState({...this.state, reportDate})}
         >
           <List.Item>报告日期</List.Item>
         </DatePicker>
@@ -113,7 +111,7 @@ class Detail extends React.Component {
         <List.Item>
           今日总结
           <TextareaItem
-            value={this.state.displayRecord.content}
+            value={this.state.content}
             onChange={this.inputContent.bind(this)}
             rows={7}
           >
@@ -124,17 +122,15 @@ class Detail extends React.Component {
   }
 }
 
-Detail.onRouteBack = function () {
-  Toast.loading('读取中')
-}
-
 Detail.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired
   }).isRequired,
   userUid: PropTypes.string.isRequired,
-  token: PropTypes.string.isRequired
+  token: PropTypes.string.isRequired,
+  record: PropTypes.object.isRequired,
+  isUpdate: PropTypes.bool.isRequired
 }
 export default connect(({ auth: { user, userUid, token } }) => {
   return {
