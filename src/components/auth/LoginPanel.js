@@ -2,7 +2,11 @@ import React, { Component, PropTypes } from 'react'
 import { View, Text, TextInput } from 'react-native'
 import { Actions } from 'react-native-router-flux'
 
-import { List, InputItem, Button, WhiteSpace } from 'antd-mobile'
+import List from 'antd-mobile/lib/list'
+import InputItem from 'antd-mobile/lib/input-item'
+import  Button from 'antd-mobile/lib/button'
+import WhiteSpace from 'antd-mobile/lib/white-space'
+
 import { createForm } from 'rc-form'
 
 
