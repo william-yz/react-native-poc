@@ -10,6 +10,7 @@ import WhiteSpace from 'antd-mobile/lib/white-space'
 
 import moment from 'moment'
 import _ from 'lodash'
+import { getReportListAction } from '../../actions/reports/reports'
 
 import { post } from '../../services/request'
 class Detail extends React.Component {
@@ -78,6 +79,7 @@ class Detail extends React.Component {
         _.set(record, 'BH_GZBGXQY.id', result.result[0].main)
         this.props.isUpdate = true
       }
+      this.props.dispatch(getReportListAction(this.props.token, this.props.userUid))
       Toast.success('保存成功', 0.5)
     } else {
       Toast.fail('保存失败', 0.5)      

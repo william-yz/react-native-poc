@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { connect } from 'react-redux'
 import { Router, Scene } from 'react-native-router-flux'
 
 import Auth from './containers/auth/auth'
@@ -33,4 +34,4 @@ const Routes = () => {
   )
 }
 
-export default Routes
+export default connect()(Routes)

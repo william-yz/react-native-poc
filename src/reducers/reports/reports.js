@@ -1,7 +1,7 @@
 
 
 
-const actions = {
+const REDUCERS = {
   ['UPDATE_REPORTS'] (state, reportList) {
     return {...state, reportList }
   }
@@ -11,7 +11,7 @@ const actions = {
 const reducer = (state = {
   reportList: []
 }, action) => {
-  return actions[action.type] && actions[action.type](state, action.payload) || state
+  return REDUCERS[action.type] && REDUCERS[action.type](state, action.payload) || state
 };
 
 export default reducer
