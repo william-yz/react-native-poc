@@ -5,6 +5,7 @@ import moment from 'moment'
 import { Actions } from 'react-native-router-flux'
 import { Keyboard } from 'react-native'
 
+import { getReportListAction } from '../../actions/reports/reports'
 import List from 'antd-mobile/lib/list'
 import Button from 'antd-mobile/lib/button'
 import WhiteSpace from 'antd-mobile/lib/white-space'
@@ -47,40 +48,7 @@ class HomePage extends React.Component {
   }
 
   async getReportList () {
-    const datas = await post('/runtime/business/data/plugin/CZCJ0009', {
-      headers: {
-        Authorization: this.props.token
-      },
-      data: {
-        "data": [
-          {
-            "main": {
-              "boID": "9b39338c-e299-4dbc-9704-d834393c8721", 
-              "boName": "BH_GZBGXQY"
-            }, 
-            "sub": { }, 
-            "where": [ ], 
-            "limit": {
-              "$no": 1, 
-              "$size": 10
-            }
-          }
-        ], 
-        "appID": "b7871793-db8f-48b7-b6e9-014504232f5a", 
-        "uid": this.props.userUid
-      }
-    })
-    if (datas.status === 0) {
-      const records = _.map(datas.result[0].data, data => {
-        return {
-          id: data['BH_GZBGXQY.id'],
-          extra: moment(parseInt(data['BH_GZBGXQY.BH_GZBGXQYBGRQ'])).format('YYYY-MM-DD'),
-          user: _.get(data, ['BH_GZBGXQY.BH_GZBGXQYBGR']),
-          row: data
-        }
-      })
-      this.props.updateList(records)
-    }
+    this.props.updateList(getReportListAction(this.props.token, this.props.userUid))
   }
 
   componentDidMount () {
@@ -139,6 +107,6 @@ const mapStateToProps = ({
 export default connect(mapStateToProps, (dispatch) => {
   return {
     setGlobalUser: (user) => dispatch({type: 'SET_USER', payload: user}),
-    updateList: (reportList) => dispatch({type: 'UPDATE_REPORTS', payload: reportList})
+    updateList: dispatch
   }
 })(HomePage)

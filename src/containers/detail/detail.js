@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { Keyboard } from 'react-native'
 import List from 'antd-mobile/lib/list'
 import InputItem from 'antd-mobile/lib/input-item'
 import DatePicker from 'antd-mobile/lib/date-picker'
@@ -80,6 +81,7 @@ class Detail extends React.Component {
         this.props.isUpdate = true
       }
       this.props.dispatch(getReportListAction(this.props.token, this.props.userUid))
+      Keyboard.dismiss()
       Toast.success('保存成功', 0.5)
     } else {
       Toast.fail('保存失败', 0.5)      
