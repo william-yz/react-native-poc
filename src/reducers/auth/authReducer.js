@@ -1,7 +1,7 @@
 
 
 
-const actions = {
+const REDUCERS = {
   ['SET_AUTH'] (state, { token, userUid }) {
     return {...state, token, userUid }
   },
@@ -19,7 +19,7 @@ const reducer = (state = {
     value: ''
   }
 }, action) => {
-  return actions[action.type] && actions[action.type](state, action.payload) || state
+  return REDUCERS[action.type] && REDUCERS[action.type](state, action.payload) || state
 };
 
 export default reducer
