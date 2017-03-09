@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import { Router, Scene } from 'react-native-router-flux'
-import { WhiteSpace } from 'antd-mobile'
 
 import Auth from './containers/auth/auth'
 import Home from './containers/home/home'
@@ -12,7 +11,8 @@ const routes = [
     component: Auth,
     title: '登录',
     initial: true
-  }, {
+  }
+  , {
     key: 'home',
     component: Home,
     title: 'home'

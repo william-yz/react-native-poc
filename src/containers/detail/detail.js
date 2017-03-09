@@ -1,6 +1,13 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { List, InputItem, DatePicker, TextareaItem, Button, Toast, WhiteSpace } from 'antd-mobile'
+import List from 'antd-mobile/lib/list'
+import InputItem from 'antd-mobile/lib/input-item'
+import DatePicker from 'antd-mobile/lib/date-picker'
+import TextareaItem from 'antd-mobile/lib/textarea-item'
+import Button from 'antd-mobile/lib/button'
+import Toast from 'antd-mobile/lib/toast'
+import WhiteSpace from 'antd-mobile/lib/white-space'
+
 import moment from 'moment'
 import _ from 'lodash'
 

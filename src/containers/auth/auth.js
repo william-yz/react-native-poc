@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import { Toast } from 'antd-mobile'
+import Toast from 'antd-mobile/lib/toast'
 import { Actions } from 'react-native-router-flux'
 
 import LoginPanel from '../../components/auth/LoginPanel'

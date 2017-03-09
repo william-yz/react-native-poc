@@ -4,7 +4,9 @@ import _ from 'lodash'
 import moment from 'moment'
 import { Actions } from 'react-native-router-flux'
 
-import { List, DatePicker, Button, Toast, WhiteSpace } from 'antd-mobile'
+import List from 'antd-mobile/lib/list'
+import Button from 'antd-mobile/lib/button'
+import WhiteSpace from 'antd-mobile/lib/white-space'
 import { post } from '../../services/request'
 
 
@@ -97,7 +99,7 @@ class HomePage extends React.Component {
   render () {
     return (
       <List renderHeader={() => '日报列表'}>
-        <WhiteSpace />
+        <WhiteSpace size="xl"/>
         <List.Item
           extra={<Button type="primary" size="small" disabled={!this.state.createAbled} onClick={this.goDetail(false).bind(this, {})} inline>新建</Button>}>
         </List.Item>
