@@ -83,8 +83,7 @@ class Detail extends React.Component {
   render () {
     
     return (
-      <List renderHeader={() => '编辑报告'}>
-        <WhiteSpace />
+      <List>
         <List.Item
           extra={<Button type="primary" size="small" onClick={this.save.bind(this)} inline>保存</Button>}>
         </List.Item>

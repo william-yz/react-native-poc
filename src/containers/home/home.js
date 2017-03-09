@@ -66,8 +66,7 @@ class HomePage extends React.Component {
 
   render () {
     return (
-      <List renderHeader={() => '日报列表'}>
-        <WhiteSpace />
+      <List>
         <List.Item
           extra={<Button type="primary" size="small" disabled={!this.state.createAbled} onClick={this.goDetail(false).bind(this, {})} inline>新建</Button>}>
         </List.Item>

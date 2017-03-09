@@ -28,7 +28,7 @@ const Routes = () => {
   return (
     <Router>
       <Scene key="root">
-        {routes.map(route => <Scene {...route}/>)}
+        {routes.map(route => <Scene sceneStyle={{marginTop: 55}} {...route}/>)}
       </Scene>
     </Router>
   )

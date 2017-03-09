@@ -31,8 +31,7 @@ class LoginPanel extends Component {
     
     return (
       <View>
-        <WhiteSpace />
-        <List renderHeader={() => '登录'}>
+        <List>
           <InputItem
             {...getFieldProps('userName',
               {rules: [{required: true}]})}
