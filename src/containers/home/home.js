@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import _ from 'lodash'
 import moment from 'moment'
 import { Actions } from 'react-native-router-flux'
+import { Keyboard } from 'react-native'
 
 import { getReportListAction } from '../../actions/reports/reports'
 import { List, DatePicker, Button, Toast, WhiteSpace } from 'antd-mobile'
@@ -49,6 +50,7 @@ class HomePage extends React.Component {
   }
 
   componentDidMount () {
+    Keyboard.dismiss()
     this.getReportList()
     this.getUser()
   }

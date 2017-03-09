@@ -16,11 +16,11 @@ const routes = [
   }, {
     key: 'home',
     component: Home,
-    title: 'home'
+    title: '日报列表'
   }, {
     key: 'detail',
     component: Detail,
-    title: 'Detail'
+    title: '编辑日报'
   }
 ]
 
